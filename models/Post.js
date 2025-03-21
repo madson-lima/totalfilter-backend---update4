@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Definição do esquema de posts
+// Definição do esquema de post
 const PostSchema = new mongoose.Schema({
   title: {
     type: String,
