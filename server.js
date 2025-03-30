@@ -94,7 +94,7 @@ app.get('/admin/dashboard', verifyToken, (req, res) => {
   res.sendFile(path.join(__dirname, 'pages', 'admin-dashboard.html'));
 });
 
-// ======================================
+/// ======================================
 // 6. Rota de Upload de Imagens
 // ======================================
 app.post('/api/upload', upload.single('image'), (req, res) => {
@@ -102,10 +102,11 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
     return res.status(400).json({ error: 'Nenhuma imagem enviada!' });
   }
 
-  // Monta a URL final para acesso ao arquivo
-  const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+  // Força a URL final com HTTPS
+  const imageUrl = `https://${req.get('host')}/uploads/${req.file.filename}`;
   res.status(200).json({ imageUrl });
 });
+
 
 // ======================================
 // 7. Rotas da Aplicação
