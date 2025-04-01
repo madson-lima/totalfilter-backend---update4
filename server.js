@@ -58,7 +58,7 @@ function fileFilter(req, file, cb) {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
 });
 
 // 4. Arquivos estáticos
@@ -75,14 +75,14 @@ app.get('/admin/dashboard', verifyToken, (req, res) => {
   res.sendFile(path.join(__dirname, 'pages', 'admin-dashboard.html'));
 });
 
-// 6. Upload de imagem com URL https forçada
+// 6. Upload de imagem com protocolo dinâmico
 app.post('/api/upload', upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'Nenhuma imagem enviada!' });
   }
 
-  const host = req.get('host').replace(/^http:/, 'https:'); // força https se necessário
-  const imageUrl = `https://${host}/uploads/${req.file.filename}`;
+  const protocol = req.protocol === 'https' ? 'https' : 'http';
+  const imageUrl = `${protocol}://${req.get('host')}/uploads/${req.file.filename}`;
   res.status(200).json({ imageUrl });
 });
 
